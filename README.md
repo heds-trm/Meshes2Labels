@@ -12,7 +12,7 @@ This conversion is very useful when a mesh can be linked with a 3D medical image
 Follow instructions [here](building.md).
 
 ## Supported formats
-* **Input mesh**: `vtk polydata`, `stl`, `obj` and `ply`. Make sure that your meshes are triangular. Also is is better to ensure than they are "clean", i.e. no presenting weird or isolated triangles, etc.
+* **Input mesh**: `vtk polydata`, `stl`, `obj` and `ply`. Make sure that your meshes are triangular. Also it is better to ensure than they are "clean", i.e. no presenting weird or isolated triangles, etc.
 * **Input reference and output label image**: any image format supported by the [ITK](https://itk.org/) library. Input reference images can have any type of voxel types, while output label images are saved in `unsigned short` (default) and `unsigned char` (using `--uchar` option) types.
 
 ## Principles and examples
