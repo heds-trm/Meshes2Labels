@@ -1,0 +1,2 @@
+phantom_right_pelvis.ply 255
+phantom_right_prox_femur.obj 150
