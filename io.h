@@ -1,3 +1,22 @@
+/*
+* This file is part of the m2l application (https://github.com/heds-trm/Meshes2Labels).
+* Copyright (c) 2012-2021 Jerome Schmid.
+* Geneva School of Health Sciences (HEdS)
+* University of Applied Sciences and Arts Western Switzerland (HES-SO)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, version 3.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef __HEDS_IO_H__
 #define __HEDS_IO_H__
 
