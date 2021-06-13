@@ -40,7 +40,7 @@ The user can specify these characteristics using the `--size`, `--spacing` and `
 
 Example:
 
-    m2l -i mesh.obj -l 200 -o label_image.mga --uchar -- size 512,512,200 --origin 0,0,0 --spacing 1,1,1
+    m2l -i mesh.obj -l 200 -o label_image.mga --uchar --size 512,512,200 --origin 0,0,0 --spacing 1,1,1
 
 ### Reference image
 A reference image can be provided using the `--ref` option to get the output image characteristics. The user can overwrite any of these characteristics using the manual options.
@@ -56,7 +56,9 @@ Using the `m2l` application the meshes are converted to a label image with same 
 ![overview](pics/meshes_label.jpg)
 
 ### Bounding box 
-A bounding box can be used to automatically define the extents of the output image. In this case, the user just has to manually provide the output spacing (which will affect the image size).
+A bounding box can be used to automatically define the extents of the output image. In this case, the user just has to manually provide the output spacing (which will affect the image size):
+
+    m2l -i mesh.obj -l 200 -o label_image.mga --uchar -f --spacing 1,1,1
 
 ![overview](pics/meshes_label_fit.jpg)
 
@@ -66,16 +68,22 @@ Two different ways can be used to compute the bounding boxes as shown in the nex
 
 ![overview](pics/femur_bbox_fit_types.jpg)
 
-Any bounding box can be enlarged with a **padding** value specified in **physical units** (`--padding` option).
+Any bounding box can be enlarged with a **padding** value specified in **physical units** (`--padding` option):
+
+    m2l -i mesh.obj -l 200 -o label_image.mga --uchar -f --spacing 1,1,1 --padding 5
+
 
 ### Other options
 
-**update mode** Sometimes you want to split the rasterization process is separate steps for each mesh instead of relying on a configuration file. In that you can switch to the update mode using the `-u` option. In this case, the application will load the image specified using `--ref` option and will paint the labels in this image without clearing its contents. 
+**update mode** Sometimes you want to split the rasterization process into separate steps for each mesh, instead of relying on a configuration file. In that case, you can switch to the update mode using the `-u` option. The application will load the image specified using `--ref` option and will paint the labels in this image without clearing its contents:
 
-**Stencil** By default, the VTK stencil approach is used to rasterize meshes to image. A previous approach using surface painting and interior filling is also available by using the `--noVtkStencil` option. This approach slightly overestimates the labeled mesh boundaries and requires closed meshes, so the VTK approach should be preferred. However, in case where the stencil approach fails, you may consider using this alternative approach.
+    m2l -i mesh_1.obj -l 200 --spacing 1,1,1 --fit -o label_image.mha 
+    m2l -i mesh_2.obj -l 255 -r label_image.mha -u -o label_image_updated.mha 
 
-**OBBTree** In case where your meshes are a large number of points or you have several meshes, you may want to speed up the process using the `--useOBBTree` option.
+**Stencil** By default, the VTK stencil approach is used to rasterize meshes to image. A previous legacy approach using surface painting and interior filling is also available by using the `--noVtkStencil` option. This approach slightly overestimates the labeled mesh boundaries and requires closed meshes, so the VTK approach should be preferred. However, in case where the stencil approach fails, you may consider using this alternative approach.
+
+**OBBTree** In case where your meshes have a large number of points or you have several meshes, you may want to speed up the process using the `--useOBBTree` option.
 
 ## Examples
 
-The folder `examples` contains shell scripts to showcase different options of the application based on data shared in the `data` folder. We advise using the excellent [MITK workbnech viewer](https://www.mitk.org/wiki/Downloads) to display the 3D images along side the meshes to better appreciate the different options previously covered.
+The folder `examples` contains shell scripts showcasing different options of the application based on data shared in the `data` folder. We advise using the excellent [MITK workbnech viewer](https://www.mitk.org/wiki/Downloads) to display the 3D images with the meshes to better appreciate the different options previously covered.
