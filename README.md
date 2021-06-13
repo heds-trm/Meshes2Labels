@@ -17,7 +17,7 @@ Follow instructions [here](building.md).
 
 ## Principles and examples
 
-The Main principles with different examples are found [here](examples.md). All options can be spotted in a glance using the command line command: `m2l -h`.
+The main principles with different examples are found [here](examples.md). All options can be spotted in a glance using the command line command: `m2l -h`.
 
 ## Licence
 
@@ -25,6 +25,6 @@ This source code is available under the **GPLv3 licence** to comply with the use
 
 ## Known limitations
 
-The code could be way more cleaner in terms of best practices, modern C++ and VTK features (e.g. use of smart pointers), as well as addition of comments. The current release mainly focuses on making the code available to the scientific community.
+The code could be cleaner in terms of best practices, use modern C++ and VTK features (e.g. use of smart pointers), as well as addition of more comments. The current release mainly focuses on making the code available to the scientific community.
 
 The project has only be tested on Windows (Visual Studio 2017), but it should compile in other platforms as all its components are cross-platform.
