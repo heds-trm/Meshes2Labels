@@ -1,5 +1,8 @@
 @echo off
 
+:: move to folder data and run the process
+pushd ../data
+
 :: convert meshes using reference image used for segmentation
 m2l -i m2l_config.txt -r cropped_phantom_CT.mha -m -o right_pelvis_femur_label.mha 
 
@@ -26,3 +29,5 @@ m2l -i phantom_right_pelvis.ply -l 255 -r right_femur_label_fit.mha -u -o right_
 
 :: convert meshes using reference image used for segmentation without using vtk stencil approach
 m2l -i m2l_config.txt -r cropped_phantom_CT.mha -m -o right_pelvis_femur_label_1x1x1_2.mha --spacing 1,1,1 --noVtkStencil
+
+popd
