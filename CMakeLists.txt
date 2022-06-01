@@ -24,14 +24,22 @@ FIND_PATH( TCLAP_INCLUDE_DIR
  tclap
 )
 
+OPTION(USE_CUSTOM_OBJ_WRITER "If true, custom obj writer is used" OFF) 
+MARK_AS_ADVANCED(USE_CUSTOM_OBJ_WRITER)
+
 # installation of binaries
 SET(INSTALL_PATH "C:/Programming/Exec" CACHE PATH "Install path m2l of executable" )
 
+IF(USE_CUSTOM_OBJ_WRITER)
 add_executable(m2l 3rdparty/gdiam/gdiam.h 3rdparty/gdiam/gdiam.cxx m2l.cxx io.cxx io.h vtkOBJWriter.h vtkOBJWriter.cxx)
+ELSE(USE_CUSTOM_OBJ_WRITER)
+add_executable(m2l 3rdparty/gdiam/gdiam.h 3rdparty/gdiam/gdiam.cxx m2l.cxx io.cxx io.h)
+ENDIF(USE_CUSTOM_OBJ_WRITER)
+
 target_include_directories(m2l SYSTEM PRIVATE  ${TCLAP_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/3rdparty/gdiam)
 disable_usual_warnings(m2l)
 
-set(vtk_req_targets VTK::CommonTransforms VTK::ImagingColor VTK::FiltersModeling VTK::FiltersGeometry VTK::FiltersSources VTK::IOLegacy VTK::CommonColor VTK::IOGeometry VTK::IOPLY VTK::RenderingCore VTK::ImagingMorphological VTK::ImagingStencil)
+set(vtk_req_targets VTK::CommonTransforms VTK::ImagingColor VTK::FiltersModeling VTK::FiltersGeometry VTK::FiltersSources VTK::FiltersParallel VTK::IOLegacy VTK::CommonColor VTK::IOGeometry VTK::IOPLY VTK::RenderingCore VTK::ImagingMorphological VTK::ImagingStencil)
 target_link_libraries(m2l ${vtk_req_targets} ${ITK_LIBRARIES})
 
 # with vtk > 8.2 we must use the following

@@ -1,5 +1,4 @@
 // From http://www.vtkjournal.org/browse/publication/711
-
 #include "vtkOBJWriter.h"
 
 #include "vtkActorCollection.h"
@@ -111,7 +110,7 @@ int vtkOBJWriter::RequestData(vtkInformation *vtkNotUsed(request),
   if (pd->GetNumberOfVerts() > 0)
     {
     cells = pd->GetVerts();
-    for (cells->InitTraversal(); cells->GetNextCell(npts,indx); ) 
+    for (cells->InitTraversal(); cells->GetNextCell(npts,indx); )
       {
         fout << "p ";
         for (i = 0; i < npts; i++)
