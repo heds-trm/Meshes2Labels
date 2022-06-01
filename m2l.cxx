@@ -996,7 +996,7 @@ void paintOutputImage(vtkStructuredPoints* fillImage,
   }
 }
 
-bool writeImageToFile(vtkStructuredPoints* image, const std::string filename)
+bool writeImageToFile(vtkStructuredPoints* image, const std::string filename, bool bUseCompression)
 {
   // write image to file
   if (image->GetScalarType() == VTK_UNSIGNED_CHAR) {
@@ -1022,6 +1022,7 @@ bool writeImageToFile(vtkStructuredPoints* image, const std::string filename)
     WriterType::Pointer writer = WriterType::New();
     writer->SetInput(filter->GetOutput());
     writer->SetFileName(filename);
+    writer->SetUseCompression(bUseCompression);
     writer->Update();
   }
   else if (image->GetScalarType() == VTK_UNSIGNED_SHORT)
@@ -1048,6 +1049,7 @@ bool writeImageToFile(vtkStructuredPoints* image, const std::string filename)
     WriterType::Pointer writer = WriterType::New();
     writer->SetInput(filter->GetOutput());
     writer->SetFileName(filename);
+    writer->SetUseCompression(bUseCompression);
     writer->Update();
   }
 
@@ -1654,10 +1656,11 @@ int main(int argc, char** argv)
       "WARNING: Make sure that your meshes are fully triangular and closed. The app "
       "will detect problematic triangular meshes but will not perform the triangularization for you.\n\n"
       "Any 3D itk format is supported for the output image.\n"
-      "Author: Jerome Schmid - HEDS - 2012-2021"
-      , ' ', "0.2.6");
+      "Author: Jerome Schmid - HEDS - 2012-2022"
+      , ' ', "0.2.7");
 
     // Define a switch and add it to the command line.
+    TCLAP::SwitchArg compressionArg("z", "compression", "use compression when saving the output image", cmd, false);
     TCLAP::SwitchArg vtkNoStencilArg("", "noVtkStencil", "do not use vtk stencil", cmd, false);
 
     TCLAP::SwitchArg obbtreeArg("", "useOBBTree", "use vtkOBBTree to compute oriented bounding box", cmd, false);
@@ -1760,6 +1763,7 @@ int main(int argc, char** argv)
     padding = paddingArg.getValue();
     bForceUseOfOBBTree = obbtreeArg.getValue();
     bUseVtkStencil = !vtkNoStencilArg.isSet();
+    bool bUseCompression = compressionArg.isSet();
 
     if (bForceUseOfOBBTree && !boriented)
     {
@@ -2169,7 +2173,7 @@ int main(int argc, char** argv)
       SaveHomogeneousMatrixToFile(filename, glob_obbox2model_M);
     }
 
-    if (bOk) writeImageToFile(oImage, ofile);
+    if (bOk) writeImageToFile(oImage, ofile, bUseCompression);
     else std::cout << "Label image has not been created.\n";
 
     if (oImage) SafeDelete(oImage);
