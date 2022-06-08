@@ -35,6 +35,15 @@ public:
 };
 
 // Description:
+// Check vtkUnstructuredGrid if has tetrahedra cells
+extern bool UnstructuredGridHasTets(vtkSmartPointer< vtkUnstructuredGrid > ugrid);
+
+// Description:
+// Extract surface from vtkUnstructuredGrid
+extern bool ExtractSurfaceFromUnstructuredGrid(vtkSmartPointer< vtkUnstructuredGrid > ugrid, vtkSmartPointer< vtkPolyData > poly, bool withCerr);
+
+
+// Description:
 // Load an unstructured grid from a specified file (.vtk).
 extern int LoadUnstructuredGridFromVTK(  
     std::string VTKFileName,

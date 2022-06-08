@@ -30,9 +30,51 @@
 #include <vtkOBJReader.h>
 #include "vtkOBJWriter.h"
 #include <vtkCommand.h>
+#include <vtkCellIterator.h>
 #include <algorithm>
+#include <vtkDataSetSurfaceFilter.h>
 #include "io.h"
 
+
+bool UnstructuredGridHasTets(vtkSmartPointer< vtkUnstructuredGrid > ugrid)
+{
+  vtkCellIterator *it = ugrid->NewCellIterator();
+  for (it->InitTraversal(); !it->IsDoneWithTraversal(); it->GoToNextCell())
+  {
+    if (it->GetCellType() == VTK_TETRA)
+    {
+      return true; 
+    }
+  }
+
+  return false;
+}
+
+bool ExtractSurfaceFromUnstructuredGrid(
+  vtkSmartPointer< vtkUnstructuredGrid > ugrid, 
+  vtkSmartPointer< vtkPolyData > poly, bool withCerr)
+{
+  auto surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+  surfaceFilter->SetInputData(ugrid);
+
+  ErrorObserver VTKReaderErrorObserver;
+  surfaceFilter->AddObserver(
+    vtkCommand::ErrorEvent,
+    &VTKReaderErrorObserver,
+    &ErrorObserver::ErrorEventObserver);
+  try {
+    surfaceFilter->Update();
+  }
+  catch (...) {
+    if (withCerr)
+      cerr << "ERROR in ExtractSurfaceFromUnstructuredGrid";
+    return false; // Failure
+  }
+
+  poly->DeepCopy(surfaceFilter->GetOutput());
+
+  return true;
+}
 
 // Description:
 // Load an unstructured grid from a specified file (.vtk).

@@ -1157,7 +1157,20 @@ bool loadMesh(const std::string& filename, vtkSmartPointer< vtkPolyData >& poly,
   bool bIsUGrid = false;
   if (!bIsPolyData) {
     // vtk unstructured grid?
+    // 2 cases: 
+    // -mesh is surfacic but is a ugrid
+    // -mesh is a tet mesh and we need to extract the surface
     bIsUGrid = LoadUnstructuredGridFromVTK(filename, ugrid) == 0;
+    if (bIsUGrid)
+    {
+      bool isTetMesh = UnstructuredGridHasTets(ugrid);
+      if (isTetMesh)
+      {
+        bool bExtract = ExtractSurfaceFromUnstructuredGrid(ugrid, poly, false);
+        bIsUGrid = !bExtract;
+        bIsPolyData = true;
+      }      
+    }
   }
 
   return bIsPolyData || bIsUGrid;
@@ -1171,7 +1184,7 @@ bool loadPolyData(const std::string& filename, vtkPolyData*& v)
 
   bool b = loadMesh(filename, poly, ugrid);
 
-  if (b && ugrid.GetPointer()) {
+  if (b && poly.GetPointer() && poly->GetNumberOfPoints() > 0) {
     std::cout << "Filename " << filename << " loaded.\n";
     v->DeepCopy(poly);
   }
@@ -1643,7 +1656,7 @@ int main(int argc, char** argv)
       "Depending on the options, this image information can be provided by:\n"
       "-the user: --origin, --spacing and --size options\n"
       "-a reference image: --ref option, supporting oriented images\n"
-      "-the bounding box fittting method which computes size and origin but NOT the spacing\n"
+      "-the bounding box fitting method which computes size and origin but NOT the spacing\n"
       "Image information can be specified in combined ways knowing that:\n"
       "-image update superseeds user, fit and ref info,\n"
       "-fit info superseeds user and ref info\n"
@@ -1653,11 +1666,12 @@ int main(int argc, char** argv)
       "In fit mode, you can specify a padding with --padding option, padding being specified in physical units.\n"
       "meshes are drawn according to their order in the config file.\n"
       "Meshes supported are vtk polydata, stl, obj and ply.\n"
+      "Tet vtkUnstructuredGrid are supported by extracting the surface as a polydata.\n"
       "WARNING: Make sure that your meshes are fully triangular and closed. The app "
       "will detect problematic triangular meshes but will not perform the triangularization for you.\n\n"
       "Any 3D itk format is supported for the output image.\n"
       "Author: Jerome Schmid - HEDS - 2012-2022"
-      , ' ', "0.2.7");
+      , ' ', "0.2.8");
 
     // Define a switch and add it to the command line.
     TCLAP::SwitchArg compressionArg("z", "compression", "use compression when saving the output image", cmd, false);
