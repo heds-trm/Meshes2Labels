@@ -12,7 +12,7 @@ This conversion is very useful when a mesh can be linked with a 3D medical image
 Follow instructions [here](building.md).
 
 ## Supported formats
-* **Input mesh**: `vtk polydata`, `stl`, `obj` and `ply`. Make sure that your meshes are triangular. Also it is better to ensure than they are "clean", i.e. not presenting weird or isolated triangles, etc.
+* **Input mesh**: `vtk polydata`, `stl`, `obj` and `ply`. Make sure that your meshes are triangular. Also it is better to ensure than they are "clean", i.e. not presenting weird or isolated triangles, etc. Tetrahedral meshes in vtkUnstructuredGrid format are also supported, the app will extract the surface as a vtlPolyData file.
 * **Input reference and output label image**: any image format supported by the [ITK](https://itk.org/) library. Input reference images can have any type of voxel types, while output label images are saved in `unsigned short` (default) and `unsigned char` (using `--uchar` option) types.
 
 ## Principles and examples
@@ -27,4 +27,4 @@ This source code is available under the **GPLv3 licence** to comply with the use
 
 The code could be cleaner in terms of best practices, use modern C++ and VTK features (e.g. use of smart pointers), as well as addition of more comments. The current release mainly focuses on making the code available to the scientific community.
 
-The project has only be tested on Windows (Visual Studio 2017), but it should compile in other platforms as all its components are cross-platform.
+The project has only be tested on Windows (Visual Studio 2017) and Ubuntu linux gcc 9.4, but it should compile in other platforms as all its components are cross-platform.
